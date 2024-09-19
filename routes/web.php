@@ -25,3 +25,6 @@ Route::get('roles/{roleId}/delete',[\App\Http\Controllers\RoleController::class,
 Route::get('roles/{roleId}/give-permission',[\App\Http\Controllers\RoleController::class,'addPermissionToRole']);
 Route::put('roles/{roleId}/give-permission',[\App\Http\Controllers\RoleController::class,'updatePermissionToRole']);
 
+Route::resource('users',\App\Http\Controllers\UserController::class);
+
+
