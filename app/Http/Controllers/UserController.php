@@ -9,6 +9,14 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view user',['only'=>['index']]);
+        $this->middleware('permission:create user',['only'=>['create','store']]);
+        $this->middleware('permission:update user',['only'=>['update','edit']]);
+        $this->middleware('permission:delete user',['only'=>['destroy']]);
+    }
+
     public function index()
     {
         $users=User::get();
@@ -30,9 +38,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required | string|max:50',
-            'email'=>'required | string|max:50|unique:users,email',
-            'password'=>'required | string|max:20|min:8',
+            'name'=>'required|string|max:50',
+            'email'=>'required|string|max:50|unique:users,email',
+            'password'=>'required|string|max:20|min:4',
             'roles'=>'required ',
         ]);
         $user=  User::create([
@@ -64,9 +72,8 @@ class UserController extends Controller
     public function update(Request $request,User $user)
     {
         $request->validate([
-            'name'=>'required | string|max:50',
-            'email'=>'required | string|max:50|unique:users,email',
-            'password'=>'required | string|max:20|min:8',
+            'name'=>'required|string|max:50',
+            'password'=>'nullable|string|max:20|min:4',
             'roles'=>'required ',
         ]);
         $data=[
@@ -85,8 +92,11 @@ class UserController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy($userId)
     {
-        // Code to delete a specific user
+        $user=User::findOrFail($userId);
+        $user->delete();
+        return redirect('/users')->with('status','User Delete Successfully ');
+
     }
 }

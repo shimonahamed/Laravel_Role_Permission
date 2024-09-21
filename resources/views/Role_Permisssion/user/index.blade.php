@@ -41,8 +41,13 @@
                                             @endif
                                     </td>
                                     <td>
+                                        @can('update user')
                                         <a href="{{url('users/'.$user-> id.'/edit')}}" class="btn btn-info">Edit</a>
+                                        @endcan
+                                        @can('delete user')
+
                                         <a href="{{url('users/'.$user-> id.'/delete')}}" class="btn btn-danger">Delete</a>
+                                            @endcan
                                     </td>
                                 </tr>
                             @endforeach
