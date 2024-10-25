@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -18,10 +19,11 @@ class LoginController extends Controller
         if ($auth){
             return redirect('/roles');
         }
-        return redirect('/login')->with('error','Username or password invalid');
+        Session::flash('failed','Login Failed');
+        return redirect()->back();
     }
     public function logout(){
         Auth::logout();
-//        return redirect()->back('/login');
+        return redirect('/login');
     }
 }
